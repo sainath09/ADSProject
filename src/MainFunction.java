@@ -87,18 +87,54 @@ class binaryHeap{
 
 
 class fourWayHeap{
-	int data;
-	long freq;
-	fourWayHeap(){
-		data=0;
-		freq=0;
+	void fourWayHeapify(ArrayList<node> l,int i,int m){
+		int child1=4*i+1;
+		int child2=4*i+2;
+		int child3=4*i+3;
+		int child4=4*i+4;
+		int min=i;
+		if(child1<m && l.get(child1).getFreq()<l.get(min).getFreq()) min=child1;
+		if(child2<m && l.get(child2).getFreq()<l.get(min).getFreq()) min=child2;
+		if(child3<m && l.get(child3).getFreq()<l.get(min).getFreq()) min=child3;
+		if(child4<m && l.get(child4).getFreq()<l.get(min).getFreq()) min=child4;
+		if(min!=i){
+			Collections.swap(l,i,min);
+			//System.out.println(l.get(i).getFreq());
+			this.fourWayHeapify(l,min,m);
+			
+		}		
 	}
-	int getData(){
-		return this.data;
+	node fourWayExtract_min(ArrayList<node> l){
+		node temp=l.get(0);
+		Collections.swap(l,0,l.size()-1);
+		l.remove(l.size()-1);
+		this.fourWayHeapify(l, 0, l.size());
+		return temp;		
 	}
-	long getFreq(){
-		return this.freq;
+	void buildFourwayHeap(ArrayList<node> l,int n){
+		for(int i=n/4;i>=0;i--){
+			this.fourWayHeapify(l, i, n);
+		}
 	}
+	
+	void build_tree_using_4way_heap(ArrayList<node> l){
+		ArrayList<node> temp=new ArrayList<node>(l);
+		while(temp.size()>1){
+			node n1=this.fourWayExtract_min(temp);
+			node n2=new node();
+			n2=this.fourWayExtract_min(temp);
+			node n3=new node();
+			n3.data=0;
+			n3.freq=n1.freq+n2.freq;
+			temp.add(n3);
+			//System.out.println(n1.data+" "+n1.freq+" " + n2.data+" "+n2.freq);
+			//System.out.println(n3.data+" "+n3.freq);
+			this.fourWayHeapify(l, temp.size()-1, temp.size());
+		}
+		
+	}
+	
+	
 	
 }
 
@@ -156,13 +192,14 @@ public class MainFunction {
 		}
 		long stopTime = System.currentTimeMillis();
 		System.out.println(stopTime-startTime+" MilliSec");
-		
-		
 		for(int i=0;i<l.size();i++){
 			node t=l.get(i);
 			//System.out.println(t.data+ " "+t.freq);
 			//System.out.println(l.get(i).getData()+" "+l.get(i).getFreq());
 		}
+		
+		
+		
 		
 		
 		
