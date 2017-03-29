@@ -69,6 +69,7 @@ class binaryHeap{
 	}
 	void build_tree_using_binary_heap(ArrayList<node> l){
 		ArrayList<node> temp=new ArrayList<node>(l);
+		this.buildHeap(temp,temp.size());
 		while(temp.size()>1){
 			node n1=this.extract_min(temp);
 			node n2=new node();
@@ -119,6 +120,7 @@ class fourWayHeap{
 	
 	void build_tree_using_4way_heap(ArrayList<node> l){
 		ArrayList<node> temp=new ArrayList<node>(l);
+		this.buildFourwayHeap(temp, temp.size());
 		while(temp.size()>1){
 			node n1=this.fourWayExtract_min(temp);
 			node n2=new node();
@@ -177,26 +179,40 @@ public class MainFunction {
 			l.add(n);
 			it.remove();
 		}
+		ArrayList<node> binHeap=new ArrayList<node>(l);
+		ArrayList<node> fourWayHeap=new ArrayList<node>(l);
+		ArrayList<node> PairingHeap=new ArrayList<node>(l);
 		//binary heap
 		binaryHeap bh=new binaryHeap();
-		bh.buildHeap(l,l.size());
-		for(int i=0;i<l.size();i++){
-			node t=l.get(i);
+		
+		for(int i=0;i<binHeap.size();i++){
+			node t=binHeap.get(i);
 			//System.out.println(t.data+ " "+t.freq);
 			//System.out.println(l.get(i).getData()+" "+l.get(i).getFreq());
 		}
 		System.out.println("");
 		long startTime = System.currentTimeMillis();
 		for(int i = 0; i < 10; i++){    //run 10 times on given data set 
-			bh.build_tree_using_binary_heap(l);
+			bh.build_tree_using_binary_heap(binHeap);
 		}
 		long stopTime = System.currentTimeMillis();
 		System.out.println(stopTime-startTime+" MilliSec");
-		for(int i=0;i<l.size();i++){
-			node t=l.get(i);
+		for(int i=0;i<binHeap.size();i++){
+			node t=binHeap.get(i);
 			//System.out.println(t.data+ " "+t.freq);
 			//System.out.println(l.get(i).getData()+" "+l.get(i).getFreq());
 		}
+		fourWayHeap fh=new fourWayHeap();
+		
+		startTime = System.currentTimeMillis();
+		for(int i = 0; i < 10; i++){    //run 10 times on given data set 
+			fh.build_tree_using_4way_heap(fourWayHeap);
+		}
+		stopTime = System.currentTimeMillis();
+		System.out.println(stopTime-startTime+" MilliSec");
+		
+		
+		
 		
 		
 		
