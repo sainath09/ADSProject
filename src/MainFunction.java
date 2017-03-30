@@ -51,7 +51,6 @@ class binaryHeap{
 		if(re<m && l.get(re).getFreq()<l.get(min).getFreq()) min=re;
 		if(min!=i){
 			Collections.swap(l,i,min);
-			//System.out.println(l.get(i).getFreq());
 			this.heapify(l,min,m);
 		}
 	}
@@ -66,6 +65,7 @@ class binaryHeap{
 		for(int i=(n/2)-1;i>=0;i--){
 			this.heapify(l,i,n);
 		}
+		
 	}
 	void build_tree_using_binary_heap(ArrayList<node> l){
 		ArrayList<node> temp=new ArrayList<node>(l);
@@ -78,9 +78,7 @@ class binaryHeap{
 			n3.data=0;
 			n3.freq=n1.freq+n2.freq;
 			temp.add(n3);
-			//System.out.println(n1.data+" "+n1.freq+" " + n2.data+" "+n2.freq);
-			//System.out.println(n3.data+" "+n3.freq);
-			this.heapify(temp, temp.size()-1, temp.size());
+			if(temp.size()!=1) this.heapify(temp, (temp.size()/2)-1, temp.size());
 		}
 		
 	}
@@ -100,7 +98,6 @@ class fourWayHeap{
 		if(child4 < m && l.get(child4).getFreq()<l.get(min).getFreq()) min=child4;
 		if(min!=i){
 			Collections.swap(l,i,min);
-			//System.out.println(l.get(i).getFreq());
 			this.fourWayHeapify(l,min,m);
 			
 		}		
@@ -113,9 +110,9 @@ class fourWayHeap{
 		return temp;		
 	}
 	void buildFourwayHeap(ArrayList<node> l,int n){
-		for(int i=n/4;i>=3;i--){
+		for(int i=((n-1)/4)+2; i>=3; i--){
 			this.fourWayHeapify(l, i, n);
-		}
+		}		
 	}
 	
 	void build_tree_using_4way_heap(ArrayList<node> l){
@@ -129,20 +126,11 @@ class fourWayHeap{
 			n3.data=0;
 			n3.freq=n1.freq+n2.freq;
 			temp.add(n3);
-			//System.out.println(n1.data+" "+n1.freq+" " + n2.data+" "+n2.freq);
-			//System.out.println(n3.data+" "+n3.freq);
-			this.fourWayHeapify(temp, temp.size()-1, temp.size());
+			if(temp.size()!=4) this.fourWayHeapify(temp, ((temp.size()-1)/4)+2, temp.size());
 		}
 		
 	}	
 }
-
-
-
-
-
-
-
 
 public class MainFunction {
 
@@ -153,7 +141,6 @@ public class MainFunction {
 		Map<Integer, Long> fre=new HashMap<Integer, Long>();
 		FileReader fr=null;
 		try {
-			//fr = new FileReader("example.txt");
 			fr=new FileReader("/home/kps/workspace/ADSProject/src/sample_input_large.txt");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -179,26 +166,15 @@ public class MainFunction {
 		ArrayList<node> binHeap=new ArrayList<node>(l);
 		ArrayList<node> fourWayHeap=new ArrayList<node>(l);
 		ArrayList<node> PairingHeap=new ArrayList<node>(l);
+		
 		//binary heap
 		binaryHeap bh=new binaryHeap();
-		
-		for(int i=0;i<binHeap.size();i++){
-			node t=binHeap.get(i);
-			//System.out.println(t.data+ " "+t.freq);
-			//System.out.println(l.get(i).getData()+" "+l.get(i).getFreq());
-		}
-		System.out.println("");
 		long startTime = System.currentTimeMillis();
 		for(int i = 0; i < 10; i++){    //run 10 times on given data set 
 			bh.build_tree_using_binary_heap(binHeap);
 		}
 		long stopTime = System.currentTimeMillis();
 		System.out.println(stopTime-startTime+" MilliSec");
-		for(int i=0;i<binHeap.size();i++){
-			node t=binHeap.get(i);
-			//System.out.println(t.data+ " "+t.freq);
-			//System.out.println(l.get(i).getData()+" "+l.get(i).getFreq());
-		}
 		
 		//four Way heap
 		node dummy=new node();
@@ -206,13 +182,15 @@ public class MainFunction {
 		fourWayHeap.add(0,dummy);
 		fourWayHeap.add(0,dummy);
 		fourWayHeap fh=new fourWayHeap();
-		
 		startTime = System.currentTimeMillis();
 		for(int i = 0; i < 10; i++){    //run 10 times on given data set 
 			fh.build_tree_using_4way_heap(fourWayHeap);
 		}
 		stopTime = System.currentTimeMillis();
 		System.out.println(stopTime-startTime+" MilliSec");
+		
+		//pairing Heaps
+		
 				
 	}
 
