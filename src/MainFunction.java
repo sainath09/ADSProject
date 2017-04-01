@@ -11,9 +11,14 @@ import java.util.Map;
 class node{
 	int data;
 	long freq;
+	node left;
+	node right;
 	node(){
 		data=0;
 		freq=0;
+		left=null;
+		right=null;
+		
 	}
 	long getData(){
 		return this.data;
@@ -22,18 +27,6 @@ class node{
 		return this.freq;
 	}
 }
-class huffManTree{
-	long data;
-	long freq;
-	huffManTree left;
-	huffManTree right;
-	huffManTree(int dat,int fre){
-		data=dat;
-		freq=fre;
-	}
-}
-
-
 
 class binaryHeap{
 	int left(int i){
@@ -86,8 +79,10 @@ class binaryHeap{
 			node n2=new node();
 			n2=this.extract_min(temp);
 			node n3=new node();
-			n3.data=0;
+			n3.data=-1;
 			n3.freq=n1.freq+n2.freq;
+			n3.left=n1;
+			n3.right=n2;
 			temp.add(n3);
 			int i=temp.size();
 			while(i>1 && temp.get(parent(i)).getFreq() > temp.get(i-1).getFreq() ){
@@ -140,13 +135,13 @@ class fourWayHeap{
 		ArrayList<node> temp=new ArrayList<node>(l);
 		this.buildFourwayHeap(temp, temp.size());
 		while(temp.size()>4){
-			for(int i=0;i<l.size();i++){
-			System.out.println(l.get(i).getData()+" "+l.get(i).getFreq());
-			}
-			System.out.println("");
+//			for(int i=0;i<temp.size();i++){
+//			System.out.println(temp.get(i).getData()+" "+temp.get(i).getFreq());
+//			}
+//			System.out.println(" Size:"+temp.size());
+//			System.out.println("");
 			node n1=this.fourWayExtract_min(temp);
-			node n2=new node();
-			n2=this.fourWayExtract_min(temp);
+			node n2=this.fourWayExtract_min(temp);
 			node n3=new node();
 			n3.data=0;
 			n3.freq=n1.freq+n2.freq;
@@ -157,6 +152,9 @@ class fourWayHeap{
 				i=((i-1)/4)+2;
 			}
 		}
+//		for(int i=0;i<temp.size();i++){
+//			System.out.println(temp.get(i).getData()+" "+temp.get(i).getFreq());
+//			}
 		
 	}	
 }
@@ -170,7 +168,7 @@ public class MainFunction {
 		Map<Integer, Long> fre=new HashMap<Integer, Long>();
 		FileReader fr=null;
 		try {
-			fr=new FileReader("/home/kps/workspace/ADSProject/src/example.txt");
+			fr=new FileReader("/home/kps/workspace/ADSProject/src/sample_input_large.txt");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -199,8 +197,8 @@ public class MainFunction {
 		//binary heap
 		binaryHeap bh=new binaryHeap();
 		long startTime = System.currentTimeMillis();
-		for(int i = 0; i < 10; i++){    //run 10 times on given data set 
-			//bh.build_tree_using_binary_heap(binHeap);
+		for(int i = 0; i < 15; i++){    //run 10 times on given data set 
+			bh.build_tree_using_binary_heap(binHeap);
 		}
 		long stopTime = System.currentTimeMillis();
 		System.out.println(stopTime-startTime+" MilliSec");
@@ -212,7 +210,7 @@ public class MainFunction {
 		fourWayHeap.add(0,dummy);
 		fourWayHeap fh=new fourWayHeap();
 		startTime = System.currentTimeMillis();
-		for(int i = 0; i < 1; i++){    //run 10 times on given data set 
+		for(int i = 0; i < 15; i++){    //run 10 times on given data set 
 			fh.build_tree_using_4way_heap(fourWayHeap);
 		}
 		stopTime = System.currentTimeMillis();
