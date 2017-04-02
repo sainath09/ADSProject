@@ -16,6 +16,7 @@ public class MainFunction {
 		Map<Integer, Long> fre=new HashMap<Integer, Long>();
 		FileReader fr=null;
 		try {
+			//fr=new FileReader("/home/kps/workspace/ADSProject/src/example.txt");
 			fr=new FileReader("/home/kps/workspace/ADSProject/src/sample_input_large.txt");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -45,7 +46,7 @@ public class MainFunction {
 		//binary heap
 		binaryHeap bh=new binaryHeap();
 		long startTime = System.currentTimeMillis();
-		for(int i = 0; i < 10; i++){    //run 10 times on given data set 
+		for(int i = 0; i < 0; i++){    //run 10 times on given data set 
 			node root=bh.build_tree_using_binary_heap(binHeap);	
 		}
 		

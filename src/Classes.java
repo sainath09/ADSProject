@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -181,14 +182,14 @@ class fourWayHeap{
 	}
 	void encodeData(ArrayList<nodeHuffman> codeTable) throws NumberFormatException, IOException{
 		String FILEWRITE="/home/kps/workspace/ADSProject/src/encoded.bin";
+		//String FILEREAD="/home/kps/workspace/ADSProject/src/example.txt";
 		String FILEREAD="/home/kps/workspace/ADSProject/src/sample_input_large.txt";
 		Map<Integer, ArrayList<Integer>> fre=new HashMap<Integer, ArrayList<Integer>>();
 		for(int i=0;i<codeTable.size();i++){
 			fre.put(codeTable.get(i).data,codeTable.get(i).Hcode );
 		}
 		FileReader fr=null;
-		FileWriter fw=new FileWriter(FILEWRITE);
-		BufferedWriter bw=new BufferedWriter(fw);
+		FileOutputStream os=new FileOutputStream(FILEWRITE);
 		try {
 			fr=new FileReader(FILEREAD);
 		} catch (FileNotFoundException e) {
@@ -197,17 +198,23 @@ class fourWayHeap{
 		}
 		BufferedReader br=new BufferedReader(fr);
 		String S=new String();
-		String codeOP="";
+		//String codeOP=new String();
+		StringBuilder codeOP=new StringBuilder();
 		while((S=br.readLine())!=null){
+			
 			int temp=Integer.parseInt(S);
 			ArrayList<Integer> code=new ArrayList<Integer>(fre.get(temp));
 			for(int i=0;i<code.size();i++){
-				codeOP+=code.get(i);
+				codeOP.append(code.get(i));
 			}
-			bw.write(codeOP);
-			codeOP="";
 		}
-		bw.close();
+		for(int i=0;i<codeOP.length();i=i+8){
+			String tempS=codeOP.substring(i, i+8);
+			int tempInt= Integer.parseInt(tempS, 2);
+			//System.out.println(i);
+			os.write(tempInt);
+		}
+		os.close();
 	}
 	void writeToFile(ArrayList<nodeHuffman> codeTable) throws IOException{
 		String FILENAME="/home/kps/workspace/ADSProject/src/code_table.txt";
