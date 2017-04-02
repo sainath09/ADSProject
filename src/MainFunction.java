@@ -8,167 +8,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-class node{
-	int data;
-	long freq;
-	node left;
-	node right;
-	node(){
-		data=0;
-		freq=0;
-		left=null;
-		right=null;
-		
-	}
-	long getData(){
-		return this.data;
-	}
-	long getFreq(){
-		return this.freq;
-	}
-}
-
-class binaryHeap{
-	int left(int i){
-		return (2*i)+1;
-	}
-	int right(int i){
-		return (2*i)+2;
-	}
-	int parent(int i){
-		return (i/2) - 1;
-	}
-	void heapify(ArrayList<node> l,int i,int m){
-		int le=left(i);
-		int re=right(i);
-		int min=i;
-		
-		if(le<m && l.get(le).getFreq()<l.get(min).getFreq()) min=le;
-		if(re<m && l.get(re).getFreq()<l.get(min).getFreq()) min=re;
-		if(min!=i){
-			Collections.swap(l,i,min);
-			this.heapify(l,min,m);
-		}
-	}
-	node extract_min(ArrayList<node> l){
-		node temp=l.get(0);
-		Collections.swap(l,0,l.size()-1);
-		l.remove(l.size()-1);
-		this.heapify(l,0,l.size());
-		return temp;
-	}
-	void buildHeap(ArrayList<node> l, int n){
-		for(int i=(n/2)-1;i>=0;i--){
-			this.heapify(l,i,n);
-		}
-//		for(int i=0;i<n;i++){
-//			System.out.println(l.get(i).getData()+" "+l.get(i).getFreq());
-//		}
-//		System.out.println("");
-		
-	}
-	void build_tree_using_binary_heap(ArrayList<node> l){
-		ArrayList<node> temp=new ArrayList<node>(l);
-		this.buildHeap(temp,temp.size());
-		while(temp.size()>1){ 
-//			for(int i=0;i<temp.size();i++){
-//				System.out.println(temp.get(i).getData()+" "+temp.get(i).getFreq() );
-//			}
-			//System.out.println("");
-			node n1=this.extract_min(temp);
-			node n2=new node();
-			n2=this.extract_min(temp);
-			node n3=new node();
-			n3.data=-1;
-			n3.freq=n1.freq+n2.freq;
-			n3.left=n1;
-			n3.right=n2;
-			temp.add(n3);
-			int i=temp.size();
-			while(i>1 && temp.get(parent(i)).getFreq() > temp.get(i-1).getFreq() ){
-				Collections.swap(temp, i-1, parent(i));
-				i=parent(i);
-			}
-			
-		}
-		
-	}
-}
-
-
-class fourWayHeap{
-	void fourWayHeapify(ArrayList<node> l,int i,int m){
-		int child1=4*(i-2);
-		int child2=4*(i-2)+1;
-		int child3=4*(i-2)+2;
-		int child4=4*(i-2)+3;
-		int min=i;
-		if(child1 < m && l.get(child1).getFreq()<l.get(min).getFreq()) min=child1;
-		if(child2 < m && l.get(child2).getFreq()<l.get(min).getFreq()) min=child2;
-		if(child3 < m && l.get(child3).getFreq()<l.get(min).getFreq()) min=child3;
-		if(child4 < m && l.get(child4).getFreq()<l.get(min).getFreq()) min=child4;
-		if(min!=i){
-			Collections.swap(l,i,min);
-			this.fourWayHeapify(l,min,m);
-			
-		}		
-	}
-	node fourWayExtract_min(ArrayList<node> l){
-		node temp=l.get(3);
-		Collections.swap(l,3,l.size()-1);
-		l.remove(l.size()-1);
-		this.fourWayHeapify(l, 3, l.size());
-		return temp;		
-	}
-	void buildFourwayHeap(ArrayList<node> l,int n){
-		for(int i=((n-1)/4)+2; i>=3; i--){
-			this.fourWayHeapify(l, i, n);
-		}
-//		for(int i=0;i<l.size();i++){
-//			System.out.println(l.get(i).getData()+" "+l.get(i).getFreq());
-//		}
-//		System.out.println("");
-		
-	}
-	
-	void build_tree_using_4way_heap(ArrayList<node> l){
-		ArrayList<node> temp=new ArrayList<node>(l);
-		this.buildFourwayHeap(temp, temp.size());
-		while(temp.size()>4){
-//			for(int i=0;i<temp.size();i++){
-//			System.out.println(temp.get(i).getData()+" "+temp.get(i).getFreq());
-//			}
-//			System.out.println(" Size:"+temp.size());
-//			System.out.println("");
-			node n1=this.fourWayExtract_min(temp);
-			node n2=this.fourWayExtract_min(temp);
-			node n3=new node();
-			n3.data=0;
-			n3.freq=n1.freq+n2.freq;
-			temp.add(n3);
-			int i=temp.size();
-			while(i>4 && temp.get(((i-1)/4)+2).getFreq() > temp.get(i-1).getFreq()){
-				Collections.swap(temp, i-1, ((i-1)/4)+2);
-				i=((i-1)/4)+2;
-			}
-		}
-//		for(int i=0;i<temp.size();i++){
-//			System.out.println(temp.get(i).getData()+" "+temp.get(i).getFreq());
-//			}
-		
-	}	
-}
 
 public class MainFunction {
 
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
-		
-		
 		Map<Integer, Long> fre=new HashMap<Integer, Long>();
 		FileReader fr=null;
 		try {
-			fr=new FileReader("/home/kps/workspace/ADSProject/src/sample_input_large.txt");
+			fr=new FileReader("/home/kps/workspace/ADSProject/src/example.txt");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -197,21 +45,23 @@ public class MainFunction {
 		//binary heap
 		binaryHeap bh=new binaryHeap();
 		long startTime = System.currentTimeMillis();
-		for(int i = 0; i < 15; i++){    //run 10 times on given data set 
-			bh.build_tree_using_binary_heap(binHeap);
+		for(int i = 0; i < 10; i++){    //run 10 times on given data set 
+			node root=bh.build_tree_using_binary_heap(binHeap);	
 		}
+		
 		long stopTime = System.currentTimeMillis();
 		System.out.println(stopTime-startTime+" MilliSec");
 		
 		//four Way heap
+		
 		node dummy=new node();
 		fourWayHeap.add(0,dummy);
 		fourWayHeap.add(0,dummy);
 		fourWayHeap.add(0,dummy);
 		fourWayHeap fh=new fourWayHeap();
 		startTime = System.currentTimeMillis();
-		for(int i = 0; i < 15; i++){    //run 10 times on given data set 
-			fh.build_tree_using_4way_heap(fourWayHeap);
+		for(int i = 0; i < 1; i++){    //run 10 times on given data set 
+			node root=fh.build_tree_using_4way_heap(fourWayHeap);			
 		}
 		stopTime = System.currentTimeMillis();
 		System.out.println(stopTime-startTime+" MilliSec");
