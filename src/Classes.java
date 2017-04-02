@@ -1,8 +1,13 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 
 class nodeHuffman{
@@ -170,40 +175,56 @@ class fourWayHeap{
 	void genCodeTable(node root) throws IOException{
 		nodeHuffman nH=new nodeHuffman();
 		ArrayList<nodeHuffman> codeTable = new ArrayList<nodeHuffman>();
-		nH.treeTrav(root, nH.Hcode, codeTable);		
+		nH.treeTrav(root, nH.Hcode, codeTable);	
+		this.encodeData(codeTable);
 		this.writeToFile(codeTable);
+	}
+	void encodeData(ArrayList<nodeHuffman> codeTable) throws NumberFormatException, IOException{
+		String FILEWRITE="/home/kps/workspace/ADSProject/src/encoded.bin";
+		String FILEREAD="/home/kps/workspace/ADSProject/src/sample_input_large.txt";
+		Map<Integer, ArrayList<Integer>> fre=new HashMap<Integer, ArrayList<Integer>>();
+		for(int i=0;i<codeTable.size();i++){
+			fre.put(codeTable.get(i).data,codeTable.get(i).Hcode );
+		}
+		FileReader fr=null;
+		FileWriter fw=new FileWriter(FILEWRITE);
+		BufferedWriter bw=new BufferedWriter(fw);
+		try {
+			fr=new FileReader(FILEREAD);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		BufferedReader br=new BufferedReader(fr);
+		String S=new String();
+		String codeOP="";
+		while((S=br.readLine())!=null){
+			int temp=Integer.parseInt(S);
+			ArrayList<Integer> code=new ArrayList<Integer>(fre.get(temp));
+			for(int i=0;i<code.size();i++){
+				codeOP+=code.get(i);
+			}
+			bw.write(codeOP);
+			codeOP="";
+		}
+		bw.close();
 	}
 	void writeToFile(ArrayList<nodeHuffman> codeTable) throws IOException{
 		String FILENAME="/home/kps/workspace/ADSProject/src/code_table.txt";
-		BufferedWriter bw = null;
-		FileWriter fw = null;
-		fw = new FileWriter(FILENAME);
-		bw = new BufferedWriter(fw);
-		try {
-			String content = "";
-			for(int j=0;j<codeTable.size();j++){
-				//System.out.print(codeTable.get(j).data+"-->");
-				content+=codeTable.get(j).data+" " ;
-				for(int k=0;k<codeTable.get(j).Hcode.size();k++){
-					//System.out.print(codeTable.get(j).Hcode.get(k));
-					content+=codeTable.get(j).Hcode.get(k);
-				}
-				System.out.println(content);
-				content="";
-				bw.write(content);
-				
+		FileWriter fw = new FileWriter(FILENAME);
+		BufferedWriter bw = new BufferedWriter(fw);
+		String content = "";
+		for(int j=0;j<codeTable.size();j++){
+			content+=codeTable.get(j).data+" " ;
+			for(int k=0;k<codeTable.get(j).Hcode.size();k++){
+				content+=codeTable.get(j).Hcode.get(k);
 			}
-
-			
-			
-
-			System.out.println("Done");
-
-		} catch (IOException e) {
-
-			e.printStackTrace();
-
-		} 
+			//System.out.println(content);
+		    content+='\n';
+			bw.write(content);
+			content="";	
+		}
+		bw.close();
 	}
 }
 

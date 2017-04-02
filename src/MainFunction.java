@@ -16,7 +16,7 @@ public class MainFunction {
 		Map<Integer, Long> fre=new HashMap<Integer, Long>();
 		FileReader fr=null;
 		try {
-			fr=new FileReader("/home/kps/workspace/ADSProject/src/example.txt");
+			fr=new FileReader("/home/kps/workspace/ADSProject/src/sample_input_large.txt");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
