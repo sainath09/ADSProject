@@ -1,0 +1,3 @@
+all: encoder decoder
+encoder: javac encoder.java
+decoder:javac decoder.java
