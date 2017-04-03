@@ -74,13 +74,14 @@ class huffManTree{
 		//System.out.println("SB LENGTH"+sb.length());
 		decoderNode temp=this.root;
 		long l=sb.length();
-		for(long i = 0; i <= l; i++){
+		for(int i = 0; i <= l; i++){
 			//System.out.println(i+" "+l);
 			if(temp.data != -1){
 				StringBuilder content = new StringBuilder();
 				content.append(temp.data);
+				content.append("\n");
 				bw.write(content.toString());
-				//System.out.println(i+" "+temp.data);
+				//System.out.println(temp.data);
 				temp=this.root;
 				i--;
 			}
@@ -89,7 +90,7 @@ class huffManTree{
 				else temp=temp.right;
 			}
 		}
-	fw.close();
+	bw.close();
 	}
 }
 
