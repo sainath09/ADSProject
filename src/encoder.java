@@ -182,7 +182,7 @@ class fourWayHeap{
 		this.writeToFile(codeTable);
 	}
 	void encodeData(ArrayList<nodeHuffman> codeTable,String INPUTFILE) throws NumberFormatException, IOException{
-		String FILEWRITE="/home/kps/workspace/ADSProject/src/encoded.bin";
+		String FILEWRITE="encoded.bin";
 		//String FILEREAD="/home/kps/workspace/ADSProject/src/example.txt";
 		String FILEREAD=INPUTFILE;
 		Map<Integer, ArrayList<Integer>> fre=new HashMap<Integer, ArrayList<Integer>>();
@@ -218,7 +218,7 @@ class fourWayHeap{
 		os.close();
 	}
 	void writeToFile(ArrayList<nodeHuffman> codeTable) throws IOException{
-		String FILENAME="/home/kps/workspace/ADSProject/src/code_table.txt";
+		String FILENAME="code_table.txt";
 		FileWriter fw = new FileWriter(FILENAME);
 		BufferedWriter bw = new BufferedWriter(fw);
 		String content = "";
@@ -240,8 +240,8 @@ class fourWayHeap{
 public class encoder {
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
-		//String INPUTFILE=args[0];
-		String INPUTFILE="/home/kps/workspace/ADSProject/src/sample_input_large.txt";
+		String INPUTFILE=args[0];
+		//String INPUTFILE="/home/kps/workspace/ADSProject/src/sample_input_large.txt";
 		Map<Integer, Long> fre=new HashMap<Integer, Long>();
 		FileReader fr=null;
 		try {	

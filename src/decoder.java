@@ -53,7 +53,7 @@ class huffManTree{
 	
 	void decoder(String BINFILE) throws IOException{
 		FileInputStream fis=new FileInputStream(BINFILE);
-		String decoderWriter="/home/kps/workspace/ADSProject/src/decoded.txt";
+		String decoderWriter="decoded.txt";
 		FileWriter fw = new FileWriter(decoderWriter);
 		BufferedWriter bw = new BufferedWriter(fw);
 		byte[] buffer=null;
@@ -98,10 +98,10 @@ public class decoder {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		//String BINFILE=args[0];
-		//String CODETABLE=args[1];
-		String BINFILE="/home/kps/workspace/ADSProject/src/encoded.bin";
-		String CODETABLE="/home/kps/workspace/ADSProject/src/code_table.txt";
+		String BINFILE=args[0];
+		String CODETABLE=args[1];
+		//String BINFILE="/home/kps/workspace/ADSProject/src/encoded.bin";
+		//String CODETABLE="/home/kps/workspace/ADSProject/src/code_table.txt";
 		FileReader fr=new FileReader(CODETABLE);
 		BufferedReader br=new BufferedReader(fr);
 		String S=new String();
