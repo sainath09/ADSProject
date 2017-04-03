@@ -3,6 +3,7 @@ import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -19,15 +20,21 @@ class decoderNode{
 		right=null;
 	}
 }
+class decoderTest{
+	
+}
 class huffManTree{
 	decoderNode root;
+	
 	public huffManTree() {
 		// TODO Auto-generated constructor stub
 		root=new decoderNode();
 	}
+	
 	void decodeTree(ArrayList<decoderNode> decoderNode){
-		decoderNode node=this.root;
+		//decoderNode node=this.root;
 		for(int i=0;i<decoderNode.size();i++){
+			decoderNode node=this.root;
 			String code=decoderNode.get(i).code;
 			//System.out.println(code+" "+i+" "+code.length());
 			for(int j=0;j<code.length();j++){
@@ -43,7 +50,50 @@ class huffManTree{
 			node.data=decoderNode.get(i).data;
 		}
 	}
+	
+	void decoder(String BINFILE) throws IOException{
+		FileInputStream fis=new FileInputStream(BINFILE);
+		String decoderWriter="/home/kps/workspace/ADSProject/src/decoded.txt";
+		FileWriter fw = new FileWriter(decoderWriter);
+		BufferedWriter bw = new BufferedWriter(fw);
+		String content = "";
+		byte[] buffer=null;
+		buffer=new byte[fis.available()];
+		fis.read(buffer);
+		fis.close();
+		//System.out.println(buffer.length);
+//		for(int i=0;i<buffer.length;i++){
+//			System.out.println(buffer[i]);	
+//		}
+		
+		StringBuilder sb=new StringBuilder();
+		for(int i=0;i<buffer.length;i++){
+			byte b1 = buffer[i];
+			String s1 = String.format("%8s", Integer.toBinaryString(b1 & 0xFF)).replace(' ', '0');
+			sb.append(s1);
+		}
+		//System.out.println("SB LENGTH"+sb.length());
+		decoderNode temp=this.root;
+		long l=sb.length();
+		for(int i = 0; i <= l; i++){
+			//System.out.println(i+" "+l);
+			if(temp.data != -1){
+				content=""+temp.data;
+				bw.write(content);
+				content="";
+				//System.out.println(i+" "+temp.data);
+				temp=this.root;
+				i--;
+			}
+			else if (i!=l){
+				if(sb.charAt(i)=='0') temp=temp.left;
+				else temp=temp.right;
+			}
+		}
+	fw.close();
+	}
 }
+
 public class Decoder {
 
 	public static void main(String[] args) throws IOException {
@@ -65,20 +115,11 @@ public class Decoder {
 		br.close();
 		huffManTree hft=new huffManTree();
 		hft.decodeTree(decoder);
-		Decoder d=new Decoder();
-		d.decode(BINFILE,hft.root);
-	}
-
-	private void decode(String bINFILE, decoderNode root) throws IOException {
-		// TODO Auto-generated method stub
-		FileInputStream fis=new FileInputStream(bINFILE);
-		System.out.println(fis.available());
-		int content;
-		while ((content = fis.read()) != -1) {
-			// convert to char and display it
-			System.out.print((char) content);
-		}
+		//String s="000000000000001111100000000000000111110000000000000011111";
+		long startTime = System.currentTimeMillis();
+		hft.decoder(BINFILE);
+		long stopTime = System.currentTimeMillis();
+		System.out.println("time for decode:"+(stopTime-startTime)+" MilliSec");
 		
 	}
-
 }
