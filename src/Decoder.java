@@ -56,7 +56,6 @@ class huffManTree{
 		String decoderWriter="/home/kps/workspace/ADSProject/src/decoded.txt";
 		FileWriter fw = new FileWriter(decoderWriter);
 		BufferedWriter bw = new BufferedWriter(fw);
-		String content = "";
 		byte[] buffer=null;
 		buffer=new byte[fis.available()];
 		fis.read(buffer);
@@ -75,12 +74,12 @@ class huffManTree{
 		//System.out.println("SB LENGTH"+sb.length());
 		decoderNode temp=this.root;
 		long l=sb.length();
-		for(int i = 0; i <= l; i++){
+		for(long i = 0; i <= l; i++){
 			//System.out.println(i+" "+l);
 			if(temp.data != -1){
-				content=""+temp.data;
-				bw.write(content);
-				content="";
+				StringBuilder content = new StringBuilder();
+				content.append(temp.data);
+				bw.write(content.toString());
 				//System.out.println(i+" "+temp.data);
 				temp=this.root;
 				i--;
