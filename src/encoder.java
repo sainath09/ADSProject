@@ -114,13 +114,12 @@ class fourWayHeap{
 	void genCodeTable(node root,String INPUTFILE) throws IOException{
 		nodeHuffman nH=new nodeHuffman();
 		ArrayList<nodeHuffman> codeTable = new ArrayList<nodeHuffman>();
-		nH.treeTrav(root, nH.Hcode, codeTable);	
-		this.encodeData(codeTable,INPUTFILE);
-		this.writeToFile(codeTable);
+		nH.treeTrav(root, nH.Hcode, codeTable);	 // Huffman tree
+		this.encodeData(codeTable,INPUTFILE);   //encode in file
+		this.writeToFile(codeTable);            //write code table to file
 	}
 	void encodeData(ArrayList<nodeHuffman> codeTable,String INPUTFILE) throws NumberFormatException, IOException{
 		String FILEWRITE="encoded.bin";
-		//String FILEREAD="/home/kps/workspace/ADSProject/src/example.txt";
 		String FILEREAD=INPUTFILE;
 		Map<Integer, ArrayList<Integer>> fre=new HashMap<Integer, ArrayList<Integer>>();
 		for(int i=0;i<codeTable.size();i++){
@@ -139,12 +138,12 @@ class fourWayHeap{
 		//String codeOP=new String();
 		StringBuilder codeOP=new StringBuilder();
 		while((S=br.readLine())!=null){
-			
-			int temp=Integer.parseInt(S);
-			ArrayList<Integer> code=new ArrayList<Integer>(fre.get(temp));
+			ArrayList<Integer> code=new ArrayList<Integer>(fre.get(Integer.parseInt(S)));
+			StringBuffer Hcoded=new StringBuffer(); 
 			for(int i=0;i<code.size();i++){
-				codeOP.append(code.get(i));
+				Hcoded.append(code.get(i));
 			}
+			codeOP.append(Hcoded);
 		}
 		for(int i=0;i<codeOP.length();i=i+8){
 			String tempS=codeOP.substring(i, i+8);
@@ -172,8 +171,6 @@ class fourWayHeap{
 		bw.close();
 	}
 }
-
-
 
 public class encoder {
 	public static void main(String[] args) throws NumberFormatException, IOException {

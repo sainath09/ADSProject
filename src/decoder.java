@@ -71,21 +71,17 @@ class huffManTree{
 		//System.out.println("SB LENGTH"+sb.length());
 		decoderNode temp=this.root;
 		long l=sb.length();
-		for(int i = 0; i <= l; i++){
+		for(int i = 0; i < l; i++){
 			//System.out.println(i+" "+l);
+			if(sb.charAt(i)=='0') temp=temp.left;
+			else temp=temp.right;
 			if(temp.data != -1){
 				StringBuilder content = new StringBuilder();
 				content.append(temp.data);
-				
 				content.append("\n");
 				bw.write(content.toString());
 				//System.out.println(temp.data);
 				temp=this.root;
-				i--;
-			}
-			else if (i!=l){
-				if(sb.charAt(i)=='0') temp=temp.left;
-				else temp=temp.right;
 			}
 		}
 	bw.close();
@@ -98,8 +94,6 @@ public class decoder {
 		// TODO Auto-generated method stub
 		String BINFILE=args[0];
 		String CODETABLE=args[1];
-		//String BINFILE="/home/kps/workspace/ADSProject/src/encoded.bin";
-		//String CODETABLE="/home/kps/workspace/ADSProject/src/code_table.txt";
 		FileReader fr=new FileReader(CODETABLE);
 		BufferedReader br=new BufferedReader(fr);
 		String S=new String();
