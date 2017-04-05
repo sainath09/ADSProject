@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.swing.plaf.SliderUI;
+
 
 class nodeHuffman{
 	int data;
@@ -89,7 +91,7 @@ class binaryHeap{
 			this.heapify(l,i,n);
 		}	
 	}
-	node build_tree_using_binary_heap(ArrayList<node> l){
+	void build_tree_using_binary_heap(ArrayList<node> l){
 		ArrayList<node> temp=new ArrayList<node>(l);
 		this.buildHeap(temp,temp.size());
 		node root=new node();
@@ -111,7 +113,6 @@ class binaryHeap{
 			
 		}
 		this.genCodeTable(root);
-		return root;
 	}
 	void genCodeTable(node root){
 		nodeHuffman nH=new nodeHuffman();
@@ -151,7 +152,7 @@ class fourWayHeap{
 		}
 	}
 	
-	node build_tree_using_4way_heap(ArrayList<node> l,String INPUTFILE) throws IOException{
+	void build_tree_using_4way_heap(ArrayList<node> l,String INPUTFILE) throws IOException{
 		ArrayList<node> temp=new ArrayList<node>(l);
 		this.buildFourwayHeap(temp, temp.size());
 		node root=new node();
@@ -171,8 +172,7 @@ class fourWayHeap{
 			}
 			if(temp.size()==4) root=n3;
 		}
-	this.genCodeTable(root,INPUTFILE);
-	return root;	
+	this.genCodeTable(root,INPUTFILE);	
 	}
 	void genCodeTable(node root,String INPUTFILE) throws IOException{
 		nodeHuffman nH=new nodeHuffman();
@@ -236,6 +236,107 @@ class fourWayHeap{
 	}
 }
 
+class pairingHeapNode{
+	node phNode;
+	ArrayList<pairingHeapNode> children;
+	pairingHeapNode(){
+		phNode=new node();
+		children=new ArrayList<pairingHeapNode>(); 
+	}
+	
+}
+class pairingHeap{
+	pairingHeapNode root;
+	int size;
+   public pairingHeap() {
+	// TODO Auto-generated constructor stub
+	   root=null;
+	   size=0;
+   }
+   void addelement(pairingHeapNode toAdd){
+	   if(root==null) root=toAdd;
+	   else if(root.phNode.getFreq() < toAdd.phNode.getFreq()){
+		   root.children.add(toAdd);
+	   }
+	   else{
+		   toAdd.children.add(root);
+		   root=toAdd;
+	   }
+	   size++;
+   }
+   node extractMin(){
+	   //System.out.println("test");
+	   node minN=root.phNode;
+	   ArrayList<pairingHeapNode> temp=new ArrayList<pairingHeapNode>();
+	   for(int i=root.children.size()-1;i>0;i=i-2){
+		   if(root.children.get(i).phNode.getFreq() > root.children.get(i-1).phNode.getFreq()){
+			   temp.add(root.children.get(i-1));
+			   root.children.get(i-1).children.add(root.children.get(i));
+		   }
+		   else{
+			   temp.add(root.children.get(i));
+			   root.children.get(i).children.add(root.children.get(i-1));
+		   }
+		   root.children.remove(root.children.size()-1);
+		   root.children.remove(root.children.size()-1);
+	   }
+	   if(root.children.size()>0){
+		   temp.add(root.children.get(root.children.size()-1));
+		   root.children.remove(root.children.size()-1);
+	   }
+	   pairingHeapNode temproot = null;
+	   //System.out.println(temp.size());
+	   if(temp.size() > 0){
+		   temproot=temp.get(temp.size()-1);
+		   for(int i=temp.size()-2;i>=0;i--){
+			   if(temp.get(i).phNode.getFreq() > temproot.phNode.getFreq()) 
+				   temproot.children.add(temp.get(i));
+			   else{
+				   temp.get(i).children.add(temproot);
+				   temproot=temp.get(i);
+			   }
+		   }
+	   }
+	   this.root=temproot;
+	   size--;
+	   return minN;	   
+   }
+   void build_tree_using_pairing_heap(ArrayList<node> l){
+	   
+	   node n1=new node();
+	   node n2=new node();
+	   
+	   
+	   for(int i=0;i<l.size();i++){
+		   node temp=new node();
+		   pairingHeapNode phNodeTemp=new pairingHeapNode();
+		   temp.data=l.get(i).getData();
+		   temp.freq=l.get(i).getFreq();
+		   phNodeTemp.phNode=temp;
+		   this.addelement(phNodeTemp);
+		   
+	   }
+	   
+	   //System.out.println("size:"+size+" list size"+l.size());
+	   while(size>1){
+		   pairingHeapNode ph=new pairingHeapNode();
+		   node n3=new node();
+		   //System.out.println("size:"+size);
+		   n1=this.extractMin();
+		   n2=this.extractMin();
+		   long freq=n1.getFreq()+n2.getFreq();
+		   n3.freq=freq;
+		   n3.data=-1;
+		   ph.phNode=n3;
+		   this.addelement(ph);
+	   }
+	   
+	   
+   }
+   
+	
+	
+}
 
 public class encoder {
 	public static void main(String[] args) throws NumberFormatException, IOException {
@@ -275,12 +376,23 @@ public class encoder {
 		//binary heap
 		binaryHeap bh=new binaryHeap();
 		long startTime = System.currentTimeMillis();
-		for(int i = 0; i < 0; i++){    //run 10 times on given data set 
-			node root=bh.build_tree_using_binary_heap(binHeap);	
+		for(int i = 0; i < 10; i++){    //run 10 times on given data set 
+			bh.build_tree_using_binary_heap(binHeap);	
 		}
 		
 		long stopTime = System.currentTimeMillis();
-		System.out.println(stopTime-startTime+" MilliSec");
+		System.out.println("Time Using Binary Heap:"+(stopTime-startTime)+" MilliSec");
+		
+		//pairing heap
+		pairingHeap ph=new pairingHeap();
+		startTime = System.currentTimeMillis();
+		for(int i = 0; i < 10; i++){    //run 10 times on given data set 
+			ph.build_tree_using_pairing_heap(PairingHeap);	
+		}
+		
+	    stopTime = System.currentTimeMillis();
+		System.out.println("Pairing Heap Time:"+(stopTime-startTime)+" MilliSec");
+		
 		
 		//four Way heap
 		
@@ -291,12 +403,12 @@ public class encoder {
 		fourWayHeap fh=new fourWayHeap();
 		startTime = System.currentTimeMillis();
 		for(int i = 0; i < 1; i++){    //run 10 times on given data set 
-			node root=fh.build_tree_using_4way_heap(fourWayHeap,INPUTFILE);			
+			fh.build_tree_using_4way_heap(fourWayHeap,INPUTFILE);			
 		}
 		stopTime = System.currentTimeMillis();
-		System.out.println(stopTime-startTime+" MilliSec");
+		System.out.println("Time for 4 way, encode:"+(stopTime-startTime)+" MilliSec");
 		
-		//pairing Heaps
+		
 		
 		
 				

@@ -20,9 +20,6 @@ class decoderNode{
 		right=null;
 	}
 }
-class decoderTest{
-	
-}
 class huffManTree{
 	decoderNode root;
 	
@@ -79,6 +76,7 @@ class huffManTree{
 			if(temp.data != -1){
 				StringBuilder content = new StringBuilder();
 				content.append(temp.data);
+				
 				content.append("\n");
 				bw.write(content.toString());
 				//System.out.println(temp.data);
