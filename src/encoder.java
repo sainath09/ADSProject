@@ -216,11 +216,7 @@ public class encoder {
 		fh.genCodeTable(root,INPUTFILE);
 		long stopTime = System.currentTimeMillis();
 		System.out.println("Time for 4 way, encode:"+(stopTime-startTime)+" MilliSec");
-		
-		
-		
-		
-				
+					
 	}
 
 }
