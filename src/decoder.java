@@ -29,11 +29,9 @@ class huffManTree{
 	}
 	
 	void decodeTree(ArrayList<decoderNode> decoderNode){
-		//decoderNode node=this.root;
 		for(int i=0;i<decoderNode.size();i++){
 			decoderNode node=this.root;
 			String code=decoderNode.get(i).code;
-			//System.out.println(code+" "+i+" "+code.length());
 			for(int j=0;j<code.length();j++){
 				if(code.charAt(j)=='0'){
 					if(node.left == null)  node.left = new decoderNode();
@@ -56,23 +54,16 @@ class huffManTree{
 		byte[] buffer=null;
 		buffer=new byte[fis.available()];
 		fis.read(buffer);
-		fis.close();
-		//System.out.println(buffer.length);
-//		for(int i=0;i<buffer.length;i++){
-//			System.out.println(buffer[i]);	
-//		}
-		
+		fis.close();		
 		StringBuilder sb=new StringBuilder();
 		for(int i=0;i<buffer.length;i++){
 			byte b1 = buffer[i];
 			String s1 = String.format("%8s", Integer.toBinaryString(b1 & 0xFF)).replace(' ', '0');
 			sb.append(s1);
 		}
-		//System.out.println("SB LENGTH"+sb.length());
 		decoderNode temp=this.root;
 		long l=sb.length();
 		for(int i = 0; i < l; i++){
-			//System.out.println(i+" "+l);
 			if(sb.charAt(i)=='0') temp=temp.left;
 			else temp=temp.right;
 			if(temp.data != -1){
@@ -80,7 +71,6 @@ class huffManTree{
 				content.append(temp.data);
 				content.append("\n");
 				bw.write(content.toString());
-				//System.out.println(temp.data);
 				temp=this.root;
 			}
 		}
@@ -101,7 +91,6 @@ public class decoder {
 		while((S=br.readLine())!=null){
 			decoderNode dn = new decoderNode();
 			String[] sSplit=S.split(" "); 
-			//System.out.println(sSplit[0]+"jvf"+sSplit[1]);
 			dn.data=Integer.parseInt(sSplit[0]);
 			dn.code=sSplit[1];
 			decoder.add(dn);

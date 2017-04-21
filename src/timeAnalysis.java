@@ -177,11 +177,9 @@ public class timeAnalysis {
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
 		String INPUTFILE=args[0];
-		//String INPUTFILE="/home/kps/workspace/ADSProject/src/sample_input_large.txt";
 		Map<Integer, Long> fre=new HashMap<Integer, Long>();
 		FileReader fr=null;
 		try {	
-			//fr=new FileReader("/home/kps/workspace/ADSProject/src/example.txt");
 			fr=new FileReader(INPUTFILE);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

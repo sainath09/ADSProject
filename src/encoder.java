@@ -135,7 +135,6 @@ class fourWayHeap{
 		}
 		BufferedReader br=new BufferedReader(fr);
 		String S=new String();
-		//String codeOP=new String();
 		StringBuilder codeOP=new StringBuilder();
 		while((S=br.readLine())!=null){
 			ArrayList<Integer> code=new ArrayList<Integer>(fre.get(Integer.parseInt(S)));
@@ -148,7 +147,6 @@ class fourWayHeap{
 		for(int i=0;i<codeOP.length();i=i+8){
 			String tempS=codeOP.substring(i, i+8);
 			int tempInt= Integer.parseInt(tempS, 2);
-			//System.out.println(i);
 			os.write(tempInt);
 		}
 		os.close();
@@ -163,7 +161,6 @@ class fourWayHeap{
 			for(int k=0;k<codeTable.get(j).Hcode.size();k++){
 				content+=codeTable.get(j).Hcode.get(k);
 			}
-			//System.out.println(content);
 		    content+='\n';
 			bw.write(content);
 			content="";	
